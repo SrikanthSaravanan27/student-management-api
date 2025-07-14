@@ -3,6 +3,7 @@ package com.srikanth.studentapi.student_api.controller;
 import com.srikanth.studentapi.student_api.exception.StudentNotFoundException;
 import com.srikanth.studentapi.student_api.model.Student;
 import com.srikanth.studentapi.student_api.repository.StudentRepository;
+import jakarta.validation.Valid;
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class StudentController {
     private StudentRepository studentrepo;
 
     @PostMapping()
-    public ResponseEntity<Student> addStudent(@RequestBody Student student){
+    public ResponseEntity<Student> addStudent(@Valid @RequestBody Student student){
         Student s = studentrepo.save(student);
         return ResponseEntity.ok(s);
     }
@@ -34,7 +35,7 @@ public class StudentController {
         return ResponseEntity.ok(list);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Student> updateStudent(@PathVariable Long id, @RequestBody Student student){
+    public ResponseEntity<Student> updateStudent(@PathVariable Long id,@Valid  @RequestBody Student student){
         Student s = studentrepo.findById(id).orElseThrow(() -> new StudentNotFoundException("Student not found with id "+id));
         s.setName(student.getName());
         s.setEmail(student.getEmail());
